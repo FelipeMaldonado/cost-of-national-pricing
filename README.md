@@ -40,7 +40,6 @@ The three theoretical results the code instantiates:
 | `flex_siting.py` | Optimal **siting and operation** of flexibility across the nested B4/B6 cascade (multi-period storage LP). Returns the value of a flexibility budget, the optimal N/S split, and the marginal value = downstream boundary shadow prices (Proposition 3). Offline; needs only a solver. |
 | `make_gbmap.py` | Generates Figure 2 (`fig_gbmap.pdf`): the full GB network (ETYS substations) and the reduced 29-bus network coloured by the N/S/E zones, from PyPSA-GB open data (auto-fetched). Needs `pandas` + `matplotlib`. |
 | `reproduce_all.py` | **One-command reproduction**: runs every script above in order, tees to `reproduce_all.log`, and prints a manifest mapping each paper table/figure to its script. |
-| `cost-of-national-pricing.tex`, `references.bib` | The paper (Elsevier `elsarticle`). |
 
 ---
 
@@ -174,16 +173,14 @@ by construction, so the redispatch is energy-conserving.
 
 ---
 
-## Reproducing the paper
+## Reproducing the results
 Empirical tables and figures — one command:
 ```bash
 pip install -r requirements.txt      # pyomo, highspy, requests, pandas, pyarrow
 python reproduce_all.py              # runs every script; output in reproduce_all.log
 ```
-Build the manuscript PDF:
-```bash
-latexmk -pdf cost-of-national-pricing.tex
-```
+This repository contains the **code and data** only; the manuscript itself is not
+included here.
 
 ## Citation
 If you use this code, please cite the paper and the software (see `CITATION.cff`).

@@ -7,6 +7,14 @@ results_b6_*.csv
 nonconvex_static.csv
 reproduce_all.log
 
+# Manuscript / paper artifacts — this is a code-only replication repo
+cost-of-national-pricing.tex
+cost-of-national-pricing.pdf
+references.bib
+fig_gbmap.pdf
+fig_gbmap.png
+highlights.txt
+
 # Internal — NOT for the public repository
 cover_letter.md
 responses-to-FM-comments.md
