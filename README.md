@@ -1,5 +1,8 @@
 # The Cost of National Pricing — GB electricity market model & empirics
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20812218.svg)](https://doi.org/10.5281/zenodo.20812218)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Replication code for *“The Cost of National Pricing: Side Payments and Efficiency
 under Self-Dispatch with Redispatch in the GB Electricity Market.”*
 

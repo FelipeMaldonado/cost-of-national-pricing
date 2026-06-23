@@ -21,6 +21,7 @@ keywords:
   - congestion rent
   - balancing mechanism
 repository-code: "https://github.com/FelipeMaldonado/cost-of-national-pricing"
+doi: "10.5281/zenodo.20812218"
 version: "0.1.0"
 date-released: "2026-06-23"
 preferred-citation:
