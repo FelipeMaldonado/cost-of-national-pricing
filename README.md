@@ -184,7 +184,6 @@ included here.
 
 ## Citation
 If you use this code, please cite the paper and the software (see `CITATION.cff`).
-The pricing framework this extends is `bichler2022` in `references.bib`.
 
 ## License
 Code released under the [MIT License](LICENSE). Data retrieved at run time from
