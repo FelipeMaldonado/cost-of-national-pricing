@@ -20,7 +20,7 @@ keywords:
   - redispatch
   - congestion rent
   - balancing mechanism
-repository-code: "https://github.com/USERNAME/cost-of-national-pricing"
+repository-code: "https://github.com/FelipeMaldonado/cost-of-national-pricing"
 version: "0.1.0"
 date-released: "2026-06-23"
 preferred-citation:
