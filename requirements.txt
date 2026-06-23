@@ -1,0 +1,11 @@
+# Python dependencies for "The Cost of National Pricing" replication code.
+# Install:  pip install -r requirements.txt
+# Tested with Python 3.11–3.13. Lower bounds are conservative; the versions in
+# the trailing comments are those the code was last verified against.
+
+pyomo>=6.7        # optimisation modelling layer            (verified 6.10.1)
+highspy>=1.7      # HiGHS LP/MILP solver, no licence needed  (verified 1.14.0)
+requests>=2.31    # BMRS / NESO HTTP access                  (verified 2.34.2)
+pandas>=2.0       # data wrangling                           (verified 3.0.3)
+pyarrow>=14.0     # parquet cache for BMRS pulls             (verified 24.0.0)
+# numpy is pulled in transitively by pandas                  (verified 2.4.6)

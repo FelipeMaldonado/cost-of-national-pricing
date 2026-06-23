@@ -1,0 +1,7 @@
+Highlights
+
+- National pricing with redispatch is welfare-equivalent to nodal under convexity
+- Its visible cost splits into a congestion rent and a strategic redispatch markup
+- We measure the GB B6 congestion rent directly from public settlement data
+- It is about £1.1bn/yr, ~59% of GB constraint cost, correlation 0.97 with NESO
+- The strategic markup is zero: the cost is congestion rent, not market power

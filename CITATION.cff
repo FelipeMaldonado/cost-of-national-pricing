@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the paper."
+title: "The Cost of National Pricing — GB electricity market model & empirics"
+abstract: >-
+  Replication code for a two-stage model of national electricity pricing with
+  redispatch (network-blind national clearing followed by cost-minimising
+  redispatch), applied to the Scotland–England (B6) boundary of the GB market
+  using public Balancing Mechanism data and validated against NESO's published
+  constraint cost.
+type: software
+authors:
+  - family-names: Maldonado
+    given-names: Felipe
+    affiliation: "School of Mathematics, Statistics and Actuarial Science, University of Essex"
+    email: felipe.maldonado@essex.ac.uk
+license: MIT
+keywords:
+  - electricity market design
+  - national pricing
+  - redispatch
+  - congestion rent
+  - balancing mechanism
+repository-code: "https://github.com/USERNAME/cost-of-national-pricing"
+version: "0.1.0"
+date-released: "2026-06-23"
+preferred-citation:
+  type: article
+  title: >-
+    The Cost of National Pricing: Side Payments and Efficiency under
+    Self-Dispatch with Redispatch in the GB Electricity Market
+  authors:
+    - family-names: Maldonado
+      given-names: Felipe
+  journal: "Energy Economics"
+  year: 2026
+  notes: "Submitted to Energy Economics. Update volume/pages/DOI on acceptance."
