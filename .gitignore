@@ -17,13 +17,7 @@ highlights.txt
 
 # Internal — NOT for the public repository
 cover_letter.md
-responses-to-FM-comments.md
-computational-artifacts-and-reconciliation.md
-elexon_meeting_handout.tex
-elexon_meeting_handout.pdf
-GITHUB_PLAN.md
-old-tex/
-19-06cost-of-national-pricing-ee.pdf
+not-submission-related/
 
 # Python
 __pycache__/
