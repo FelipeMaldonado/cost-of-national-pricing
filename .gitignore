@@ -16,7 +16,7 @@ fig_gbmap.png
 highlights.txt
 
 # Internal — NOT for the public repository
-cover_letter.md
+cover_letter.*
 not-submission-related/
 
 # Python
