@@ -40,7 +40,7 @@ STEPS = [
     ("make_gbmap",      "make_gbmap.py",
      "Figure 2 (GB network map)",                 "fig_gbmap.pdf"),
     ("run_paper",       "run_paper.py",
-     "Table 1 (peak-day decomposition) + reconciliation", "results_b6_2024-12-08.csv"),
+     "Table 3 / tab:results (peak-day decomposition) + reconciliation", "results_b6_2024-12-08.csv"),
     ("run_annual",      "run_annual.py",
      "Table (annual headline) + within-unit-day markup",  "annual_sample_2024-2025.csv"),
     ("sensitivity",     "sensitivity.py",

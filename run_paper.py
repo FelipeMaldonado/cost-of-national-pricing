@@ -3,17 +3,17 @@ run_paper.py
 ============
 Reproduces the empirical result of "The Cost of National Pricing": selects the
 peak-curtailment B6 day in a candidate window, then for each settlement period
-solves the nodal benchmark, the Stage-2 redispatch (cost-based and with an
-estimated markup) and the nodal PE-A make-whole minimisation, aggregating the
-Gamma decomposition over the day. The modelled redispatch cost is cross-checked
+solves the nodal benchmark, the Stage-2 redispatch (cost-reflective mu=0, plus a
+mu=0.30 counterfactual) and the nodal PE-A make-whole minimisation, aggregating
+the Gamma decomposition over the day. The modelled redispatch cost is cross-checked
 against the redispatch cost observed directly in SO-flagged BOALF x BOD.
 
 Run (needs network access to BMRS + a MILP/LP solver):
     pip install pyomo highspy requests pandas pyarrow
     python run_paper.py
 
-Outputs: results_b6_<date>.csv and a printed summary used to fill Table 1 of the
-paper.
+Outputs: results_b6_<date>.csv and a printed summary that populates the peak-day
+decomposition table of the paper (tab:results; Table 3 in the current draft).
 """
 from __future__ import annotations
 import pandas as pd
@@ -24,13 +24,13 @@ from gb_two_stage_skeleton import (
 )
 
 CANDIDATE_DAYS = ["2024-12-04", "2024-12-08", "2025-01-01", "2025-01-24"]
-MARKUP = None          # None => estimate mu from the data (ep.estimate_markup,
-                       # the per-day diagnostic). NB the peak day is fully binding
-                       # so this is unidentified and falls back below; the paper's
-                       # identified mu_hat=0.00 comes from ep.estimate_markup_pooled.
-MARKUP_FALLBACK = 0.30  # COUNTERFACTUAL markup used for Table 1's second column
-                        # when the single-day estimate is unidentified (it is here)
-MARKUP_PLAUSIBLE_MAX = 1.0  # treat mu above this as not credible (use fallback)
+# mu is NOT estimated here. The paper's *identified* markup is mu_hat=0.00, from the
+# within-unit-day regression discontinuity over many days (ep.estimate_markup_pooled,
+# reported by run_annual.py). On a fully-binding peak day there is no non-binding
+# control, so a single-day estimate is unidentified and misleading -- we do not run
+# it. Here mu=0.30 is simply the fixed COUNTERFACTUAL (the ~30% replacement-gas
+# premium; paper Section 1) used for the *_markup column of tab:results.
+MARKUP = 0.30          # counterfactual markup for the markup column of tab:results
 N_PERIODS = 48
 PERIOD_HOURS = 0.5     # a settlement period is half an hour: MW -> MWh, so the
                        # per-period modelled cost (a power-rate) scales to GBP by 0.5
@@ -42,32 +42,12 @@ NESO_DAILY_CONSTRAINT_COST = None   # None => auto-fetched from the NESO Data Po
                                     # set a number to override.
 
 
-def run(date: str | None = None, markup: float | None = MARKUP) -> pd.DataFrame:
+def run(date: str | None = None, markup: float = MARKUP) -> pd.DataFrame:
     if date is None:
         date, ranking = ep.find_peak_curtailment_day(CANDIDATE_DAYS)
         print(f"Peak-curtailment day selected: {date}\n{ranking}\n")
-
-    # MEASURE the strategic markup mu from SO-flagged turn-up offers (P2), rather
-    # than assuming a figure, using a binding/non-binding discontinuity contrast.
-    if markup is None:
-        bind = ep.binding_periods(date)
-        est = ep.estimate_markup(date, boundary_binding_periods=bind)
-        markup = est["mu"]
-        print(f"Estimated strategic markup mu = {markup:.3f} "
-              f"(n={est['n']}, p_ref={est['p_ref']:.1f}, method={est.get('method')})")
-        # Guard the known identification failure: if there is no non-binding
-        # control on the selected day (every period binds), the estimate is a raw
-        # offer-vs-wholesale premium that conflates strategic markup with genuine
-        # peaker scarcity cost, and is typically far too high. Fall back rather
-        # than report an incredible mu.
-        if est.get("method") != "discontinuity" or markup > MARKUP_PLAUSIBLE_MAX:
-            print(f"  WARNING: mu not credibly identified "
-                  f"(method={est.get('method')}, mu={markup:.2f}); "
-                  f"falling back to MARKUP_FALLBACK={MARKUP_FALLBACK}. "
-                  f"Pass an explicit markup= or use a partially-binding day / "
-                  f"control group for a clean RD estimate.")
-            markup = MARKUP_FALLBACK
-        print()
+    print(f"Cost-reflective mu=0 (data-supported); mu={markup} counterfactual "
+          f"for the markup column (see run_annual.py for the identified mu_hat~0).\n")
 
     build = (ep.build_zonal_instance if INSTANCE == "zonal"
              else ep.load_bmrs_boalf_fpn)
@@ -115,9 +95,12 @@ def run(date: str | None = None, markup: float | None = MARKUP) -> pd.DataFrame:
 
     rec = ep.reconcile(date, neso_value=NESO_DAILY_CONSTRAINT_COST)
     print("\n=== Daily totals (GBP) ===")
+    print("  cost-reflective (mu=0, data-supported): R_cong, Gamma_costbased")
+    print("  counterfactual  (mu=0.30):              RC_markup, M_markup, Gamma_markup")
     for k in ("RC_costbased", "RC_markup", "R_cong", "M_markup", "MWP_PEA",
               "Gamma_costbased", "Gamma_markup", "welfare_loss_P1"):
-        print(f"  {k:18s}: {df[k].sum():,.0f}")
+        label = k + (" [mu=0.30]" if k.endswith("markup") or k == "M_markup" else "")
+        print(f"  {label:28s}: {df[k].sum():,.2f}")
 
     print("\n=== Reconciliation (validates the headline) ===")
     print(f"  proxy RC (period-held, 1st band): {rec['proxy_RC']:,.0f}")
