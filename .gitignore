@@ -17,6 +17,7 @@ highlights.txt
 
 # Internal — NOT for the public repository
 cover_letter.*
+*.docx
 not-submission-related/
 
 # Python
