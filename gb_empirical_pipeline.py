@@ -32,6 +32,7 @@ import math
 from functools import lru_cache
 from typing import Dict, List, Tuple
 
+import numpy as np
 import pandas as pd
 import requests
 
