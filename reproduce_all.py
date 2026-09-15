@@ -2,7 +2,7 @@
 reproduce_all.py
 ================
 One-command reproduction of every quantitative artifact in
-"The Cost of National Pricing" (Energy Economics submission).
+"What Consumers Pay for National Pricing" (Energy Policy submission).
 
 Runs each pipeline script in dependency order, tees output to
 ``reproduce_all.log``, and prints a manifest mapping every paper table/figure to
@@ -34,25 +34,30 @@ LOG = ROOT / "reproduce_all.log"
 PYTHON = sys.executable
 
 # (step name, script, paper artifact it produces, output file written) ---------
-# Ordered so that the cheap/data-fetch steps run first and the LP-heavy annual
-# run (30 days x 48 periods) sits in the middle.
+# The full-year and multi-year runs are resumable: with the committed fullyear_*.csv
+# present they finish immediately; deleting a CSV re-computes that year (slow: the
+# realised measure is ~24 s/settlement-day against the cache, longer if re-fetching).
 STEPS = [
     ("make_gbmap",      "make_gbmap.py",
-     "Figure 2 (GB network map)",                 "fig_gbmap.pdf"),
-    ("run_paper",       "run_paper.py",
-     "Table 3 / tab:results (peak-day decomposition) + reconciliation", "results_b6_2024-12-08.csv"),
-    ("run_annual",      "run_annual.py",
-     "Table (annual headline) + within-unit-day markup",  "annual_sample_2024-2025.csv"),
-    ("sensitivity",     "sensitivity.py",
-     "Figure (sensitivity) + Appendix B grids",   "sensitivity_2024-12-08.csv"),
+     "GB network map figure",                                    "fig_gbmap.pdf"),
     ("nonconvex",       "nonconvex_experiment.py",
-     "Table (nonconvex welfare-loss experiment)", "(stdout)"),
-    ("flex_siting",     "flex_siting.py",
-     "Figure 5 (flexibility siting)",             "(stdout/figure)"),
-    ("robustness",      "robustness_classification.py",
-     "Appendix C (classification robustness)",    "(stdout)"),
+     "Nonconvex welfare-loss instance (Prop 1(b), Sec 6.1)",     "(stdout)"),
+    ("run_paper",       "run_paper.py",
+     "B6 peak-day resource-cost decomposition + reconciliation (Sec 6.2)", "results_b6_2024-12-08.csv"),
+    ("run_fullyear",    "run_fullyear.py",
+     "Full-year B6 redispatch expenditure, FY2024/25 headline (Sec 6.3)",  "fullyear_2024-2025.csv"),
+    ("run_multiyear",   "run_multiyear.py",
+     "Multi-year B6 expenditure trend, FY2022/23-2023/24 (Sec 6.3)",       "fullyear_2022-2023.csv, fullyear_2023-2024.csv"),
+    ("sensitivity",     "sensitivity.py",
+     "Comparative-statics sweeps (Sec 6.4 + Appendix C)",        "sensitivity_2024-12-08.csv"),
     ("structural_obs",  "structural_observed_limit.py",
-     "Structural rent at observed SCOTEX limits (sec. 6)", "(stdout)"),
+     "Structural level at observed SCOTEX limits (Sec 6.3)",     "(stdout)"),
+    ("flex_siting",     "flex_siting.py",
+     "Flexibility siting across nested boundaries (Prop 3, Appendix B)",   "(stdout/figure)"),
+    ("robustness",      "robustness_classification.py",
+     "Scotland/B6 classification robustness, full year (Appendix D)",      "(stdout)"),
+    ("run_annual",      "run_annual.py",
+     "Legacy 30-day stratified estimate (superseded by run_fullyear)",     "annual_sample_2024-2025.csv"),
 ]
 
 

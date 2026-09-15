@@ -18,20 +18,21 @@ keywords:
   - electricity market design
   - national pricing
   - redispatch
-  - congestion rent
+  - redispatch expenditure
   - balancing mechanism
+  - nonconvex pricing
 repository-code: "https://github.com/FelipeMaldonado/cost-of-national-pricing"
-doi: "10.5281/zenodo.20812218"
-version: "0.1.0"
-date-released: "2026-06-23"
+doi: "10.5281/zenodo.20812217"
+version: "0.2.0"
+date-released: "2026-09-15"
 preferred-citation:
   type: article
   title: >-
-    The Cost of National Pricing: Side Payments and Efficiency under
-    Self-Dispatch with Redispatch in the GB Electricity Market
+    What Consumers Pay for National Pricing: Socialised Redispatch Expenditure on
+    the GB Scotland-England Boundary
   authors:
     - family-names: Maldonado
       given-names: Felipe
-  journal: "Energy Economics"
+  journal: "Energy Policy"
   year: 2026
-  notes: "Submitted to Energy Economics. Update volume/pages/DOI on acceptance."
+  notes: "Submitted to Energy Policy. Update volume/pages/DOI on acceptance."
