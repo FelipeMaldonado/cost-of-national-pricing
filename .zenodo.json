@@ -1,0 +1,30 @@
+{
+  "upload_type": "software",
+  "title": "What Consumers Pay for National Pricing: Socialised Redispatch Expenditure on the GB Scotland-England Boundary - replication code and data",
+  "description": "Replication code and data for the paper. Formalises GB electricity arrangements as a two-stage market (a network-blind national clearing followed by a cost-minimising redispatch) and measures, directly from public Balancing Mechanism settlement records, the realised redispatch expenditure on the Scotland-England (B6) boundary: GBP 1.18bn in FY 2024/25 (about 62% of GB's system constraint cost), computed for all 365 settlement days, with the multi-year trend for FY 2022/23 and FY 2023/24. Includes the optimisation models (nodal DCOPF benchmark, network-blind clearing, redispatch), the empirical pipeline over the key-free Elexon BMRS Insights and NESO Data Portal APIs, and one-command reproduction of every table and figure. This version (v0.2.0) accompanies the Energy Policy submission and supersedes v0.1.0 (Energy Economics submission); the headline is now the full-year direct measure rather than a 30-day stratified estimate.",
+  "creators": [
+    {
+      "name": "Maldonado, Felipe",
+      "affiliation": "School of Mathematics, Statistics and Actuarial Science, University of Essex"
+    }
+  ],
+  "license": "MIT",
+  "version": "v0.2.0",
+  "keywords": [
+    "electricity market design",
+    "national pricing",
+    "redispatch",
+    "redispatch expenditure",
+    "balancing mechanism",
+    "nonconvex pricing",
+    "Great Britain",
+    "REMA"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/FelipeMaldonado/cost-of-national-pricing",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}

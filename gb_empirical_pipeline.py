@@ -97,6 +97,9 @@ def classify_units(reg: pd.DataFrame) -> pd.DataFrame:
         else "ENG"
         for g, t in zip(out["gsp"], tlf)
     ]
+    # A BM unit can appear more than once in the registry (re-registration); keep
+    # the latest so the index is unique and `reg.loc[unit]` returns a single row.
+    out = out.drop_duplicates(subset="bmUnit", keep="last")
     return out.set_index("bmUnit")
 
 
@@ -657,6 +660,7 @@ def realized_b6_congestion_rent(date: str) -> Dict[str, float]:
     px = _bod_prices(bm.fetch_bod(date)).set_index(["bmUnit", "settlementPeriod"])
     mid = _mid_reference(date)
     rent = vol = 0.0
+    pay_curtail = pay_replace = 0.0            # the two legs of the expenditure
     periods = set()
     for a in (so.itertuples(index=False) if len(so) else []):
         if a.bmUnit not in reg.index:
@@ -674,9 +678,15 @@ def realized_b6_congestion_rent(date: str) -> Dict[str, float]:
             bid = -65.0
         p_rep = max(mid.get(a.settlementPeriod, ENG_GAS_COST), ENG_GAS_COST)
         rent += (p_rep - bid) * v                  # (replace - bid) * volume
+        pay_curtail += (-bid) * v                  # payment to turn wind down (bid<0)
+        pay_replace += p_rep * v                   # replacement leg (priced at MID)
         vol += v
         periods.add(a.settlementPeriod)
+    # R_cong_obs == pay_curtail + pay_replace by construction: the realised
+    # redispatch *expenditure* (a socialised transfer), split into its two legs.
     return {"R_cong_obs": float(rent), "curtailed_MWh": float(vol),
+            "curtail_payment": float(pay_curtail),
+            "replacement": float(pay_replace),
             "binding_periods": len(periods)}
 
 
@@ -872,8 +882,11 @@ def redispatch_cost_detailed(date: str) -> Dict[str, float]:
 # rows. Package: d13d78fc-60d9-4f4d-87b6-e25a20f669c0.
 NESO_CKAN_SQL = "https://api.neso.energy/api/3/action/datastore_search_sql"
 NESO_DBC_RESOURCES = {
+    # NESO "Daily Balancing Services Use of System (BSUoS) Cost Data" package;
+    # SUM("Constraints") over a year is the system-wide constraint cost.
+    "2022-2023": "2a48ee67-a7f5-4d29-b223-a92f1d289224",  # FY 2022/23 (verified)
+    "2023-2024": "5eb3f06d-26ed-4e04-81a0-ce8c02ecd11e",  # FY 2023/24 (verified)
     "2024-2025": "527a5f40-942b-416b-99df-81a51c30d041",  # FY 2024/25 (verified)
-    # "2023-2024": "<resource_id>",   # add older/newer years here
     "2025-2026": "46183ba7-48df-4318-9b4b-06828348d46e",
 }
 
